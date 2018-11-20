@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 use App\Task;
+use App\User;
+use Auth;
 use Illuminate\Http\Request;
 
 class TasksController extends Controller
@@ -34,11 +36,12 @@ class TasksController extends Controller
      */
     public function store(Request $request)
     {
+        
         Task::create([
             'title' => request('title'),
             'description' => request('description'),
             'priority' => request('priority'),
-            'user_id' => auth()->user()->id
+            'user_id' => 1
             ]);
     }
 
@@ -85,6 +88,6 @@ class TasksController extends Controller
      */
     public function destroy($id)
     {
-        //
+        Task::destroy($id);
     }
 }
