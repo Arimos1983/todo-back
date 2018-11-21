@@ -15,7 +15,9 @@ class TasksController extends Controller
      */
     public function index()
     {
-        return Task::get();
+        $id = auth()->user()->id;
+        return Task::where('user_id', $id)->get();
+        
     }
 
     /**
@@ -41,7 +43,7 @@ class TasksController extends Controller
             'title' => request('title'),
             'description' => request('description'),
             'priority' => request('priority'),
-            'user_id' => 1
+            'user_id' => auth()->user()->id
             ]);
     }
 
@@ -77,7 +79,9 @@ class TasksController extends Controller
     public function update($id, Request $request)
     {
         $task = Task::findOrFail($id);
+        if($task->user_id === auth()->user()->id){
         $task->update($request->all());
+        }
     }
 
     /**
@@ -87,7 +91,11 @@ class TasksController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function destroy($id)
-    {
-        Task::destroy($id);
+    {   
+        $task = Task::findOrFail($id);
+        if($task->user_id === auth()->user()->id){
+            Task::destroy($id);
+        }
+        
     }
 }
