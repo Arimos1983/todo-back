@@ -38,7 +38,11 @@ class TasksController extends Controller
      */
     public function store(Request $request)
     {
-        
+        $request->validate([
+            'title' => 'required|max:255',
+            'description' => 'required|max:1000',
+            'priority' => 'required',
+        ]);
         Task::create([
             'title' => request('title'),
             'description' => request('description'),
@@ -78,6 +82,12 @@ class TasksController extends Controller
      */
     public function update($id, Request $request)
     {
+        $request->validate([
+            'title' => 'required|max:255',
+            'description' => 'required|max:1000',
+            'priority' => 'required',
+        ]);
+
         $task = Task::findOrFail($id);
         if($task->user_id === auth()->user()->id){
         $task->update($request->all());
@@ -94,7 +104,11 @@ class TasksController extends Controller
     {   
         $task = Task::findOrFail($id);
         if($task->user_id === auth()->user()->id){
-            Task::destroy($id);
+           return Task::destroy($id);
+        }
+        else
+        { 
+            return "You are not authorized to delete this task";
         }
         
     }
