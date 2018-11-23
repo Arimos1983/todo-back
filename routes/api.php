@@ -17,7 +17,7 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::resource('tasks', 'TasksController')->middleware('auth:api');
+Route::resource('tasks', 'TaskController')->middleware('auth:api');
 
 Route::group([
 
