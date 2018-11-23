@@ -6,7 +6,7 @@ use App\User;
 use Auth;
 use Illuminate\Http\Request;
 
-class TasksController extends Controller
+class TaskController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -38,11 +38,9 @@ class TasksController extends Controller
      */
     public function store(Request $request)
     {
-        $request->validate([
-            'title' => 'required|max:255',
-            'description' => 'required|max:1000',
-            'priority' => 'required',
-        ]);
+
+        Task::taskValidationRules($request);
+
         Task::create([
             'title' => request('title'),
             'description' => request('description'),
@@ -82,11 +80,7 @@ class TasksController extends Controller
      */
     public function update($id, Request $request)
     {
-        $request->validate([
-            'title' => 'required|max:255',
-            'description' => 'required|max:1000',
-            'priority' => 'required',
-        ]);
+        Task::taskValidationRules($request);
 
         $task = Task::findOrFail($id);
         if($task->user_id === auth()->user()->id){

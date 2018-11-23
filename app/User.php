@@ -51,4 +51,11 @@ class User extends Authenticatable implements JWTSubject
     public function task(){
         return $this->hasMany(Task::class);
     }
+    public static function userValidationRules($request){
+        return $request->validate([
+        'name' => 'required',
+        'email' => 'required|email|unique:users',
+        'password' => 'required|min:5',
+        ]);
+    }
 }
